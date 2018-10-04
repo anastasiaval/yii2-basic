@@ -27,7 +27,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'name',
+            [
+                'attribute' => 'name',
+                'value' => function(\app\models\Product $model) {
+                    return Html::a($model->name, ['product/view', 'id' => $model->id]);
+                },
+                'format' => 'html'
+            ],
             'price',
             'created_at:datetime',
 
