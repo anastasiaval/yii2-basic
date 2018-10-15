@@ -3,19 +3,17 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\User;
-use app\models\Task;
-use app\models\search\UserSearch;
-use yii\helpers\VarDumper;
+use app\models\TaskUser;
+use app\models\search\TaskUserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
 /**
- * UserController implements the CRUD actions for User model.
+ * TaskUserController implements the CRUD actions for TaskUser model.
  */
-class UserController extends Controller
+class TaskUserController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -43,15 +41,13 @@ class UserController extends Controller
     }
 
     /**
-     * Lists all User models.
+     * Lists all TaskUser models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new UserSearch();
+        $searchModel = new TaskUserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        //$this->actionTest(3, 1);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -60,7 +56,7 @@ class UserController extends Controller
     }
 
     /**
-     * Displays a single User model.
+     * Displays a single TaskUser model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -73,14 +69,13 @@ class UserController extends Controller
     }
 
     /**
-     * Creates a new User model.
+     * Creates a new TaskUser model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new User();
-        //$model->creator_id = 1;
+        $model = new TaskUser();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -92,7 +87,7 @@ class UserController extends Controller
     }
 
     /**
-     * Updates an existing User model.
+     * Updates an existing TaskUser model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -112,7 +107,7 @@ class UserController extends Controller
     }
 
     /**
-     * Deletes an existing User model.
+     * Deletes an existing TaskUser model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -126,25 +121,18 @@ class UserController extends Controller
     }
 
     /**
-     * Finds the User model based on its primary key value.
+     * Finds the TaskUser model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return User the loaded model
+     * @return TaskUser the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = User::findOne($id)) !== null) {
+        if (($model = TaskUser::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
-    public function actionTest($user_id, $task_id)
-    {
-        $modelUser = User::findOne($user_id);
-        $modelTask = Task::findOne($task_id);
-        $modelUser->link(User::RELATION_ACCESSED_TASKS, $modelTask);
     }
 }
