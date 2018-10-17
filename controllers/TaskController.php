@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\query\TaskQuery;
 use Yii;
 use app\models\Task;
 use app\models\search\TaskSearch;
@@ -44,12 +45,14 @@ class TaskController extends Controller
      * Lists all Task models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionMy()
     {
         $searchModel = new TaskSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
+        /** @var $query TaskQuery */
+        $query = $dataProvider->query;
+        $query->byCreator(Yii::$app->user->id);
+        return $this->render('my', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
