@@ -2,9 +2,14 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
+use app\models\TaskUser;
+use app\models\User;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Task */
+/* @var $searchModel app\models\search\TaskSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Tasks', 'url' => ['index']];
@@ -37,5 +42,36 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_at',
         ],
     ]) ?>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            [
+                'label' => 'username',
+                'value' => function(\app\models\TaskUser $model) {
+                    $user = TaskUser::findOne($model->user_id);
+                    return User::findOne($user)->username;
+                }
+            ],
+
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{delete}',
+                'buttons' => [
+                    'delete' => function ($url, \app\models\TaskUser $model, $key) {
+                        $ico = \yii\bootstrap\Html::icon('ban-circle');
+                        return Html::a($ico,
+                            ['task-user/delete', 'id' => $model->id], [
+                                'data' => [
+                                    'confirm' => 'Удалить доступ?',
+                                    'method' => 'post',
+                                ],
+                            ]);
+                    }
+                ]
+            ],
+        ],
+    ]); ?>
 
 </div>
