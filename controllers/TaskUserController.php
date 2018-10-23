@@ -38,7 +38,7 @@ class TaskUserController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
-                    'unshare-all' => ['post'],
+                    'delete-all' => ['post'],
                 ],
             ],
         ];
